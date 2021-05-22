@@ -23,6 +23,8 @@ public class User {
     private String image;
     private String referrals;
     private String point;
+    private String birthday;
+    private String Address;
     private long num;
 
     public long getNum() {
@@ -123,5 +125,21 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getAddress() {
+        return Address;
+    }
+
+    public void setAddress(String address) {
+        Address = address;
     }
 }

@@ -9,14 +9,95 @@ public class JwtResponse {
     private String username;
     private String email;
     private List<String> roles;
+    private String lastname;
+    private String firtname;
+    private String phone;
+    private String image;
+    private String birthday;
+    private String address;
 
-    public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles) {
-        this.token = accessToken;
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getFirtname() {
+        return firtname;
+    }
+
+    public void setFirtname(String firtname) {
+        this.firtname = firtname;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public JwtResponse(String token,  Long id, String username, String email, List<String> roles, String lastname, String firtname, String phone, String image, String birthday, String address) {
+        this.token = token;
         this.id = id;
         this.username = username;
         this.email = email;
         this.roles = roles;
+        this.lastname = lastname;
+        this.firtname = firtname;
+        this.phone = phone;
+        this.image = image;
+        this.birthday = birthday;
+        this.address = address;
     }
+
 
     public String getAccessToken() {
         return token;

@@ -56,7 +56,11 @@ public class Rest {
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles));
+        System.out.println(userDetails.getBirthday());
+        JwtResponse jwtResponse = new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles,
+                userDetails.getLastname(), userDetails.getFirtname(), userDetails.getPhone(), userDetails.getImage(), userDetails.getBirthday(), userDetails.getAddress());
+
+        return ResponseEntity.ok(jwtResponse);
     }
     @PostMapping("/sign-up")
     public ResponseEntity<?> registerUser(@Validated @RequestBody User user){
@@ -81,7 +85,7 @@ public class Rest {
         userRepository.save(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    @GetMapping("send-mail/{email}")
+    @GetMapping("/send-mail/{email}")
     public ResponseEntity<?> sendMailForgotPassword(@PathVariable String email){
         if (!userRepository.existsByEmail(email)){
             return ResponseEntity.badRequest().body(new MessageResponse("email no already exist!"));
@@ -94,6 +98,32 @@ public class Rest {
 
         emailService.sendEmail(email, "Forgot Password", "verification code: " + key);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @GetMapping("/check-mail/{email}/{num}")
+    public ResponseEntity<?> checkKey(@PathVariable String email, @PathVariable long num){
+        User user = userRepository.findByEmail(email);
+        if (user.getNum() == num){
+            Random random = new Random();
+            long key = random.nextLong();
+            user.setNum(key);
+            userRepository.save(user);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return ResponseEntity.badRequest().body(new MessageResponse("error"));
+    }
+    @GetMapping("/edit-password/{password1}/{password2}/{email}")
+    public ResponseEntity<?> editPassword(@PathVariable String password1, @PathVariable String password2,
+                                          @PathVariable String email){
+        if (!password1.equals(password2)){
+            return ResponseEntity.badRequest().body(new MessageResponse("error password"));
+        }
+        User user = userRepository.findByEmail(email);
+        user.setPassword(encoder.encode(password1));
+        userRepository.save(user);
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUsername(user.getUsername());
+        loginRequest.setPassword(password1);
+        return new ResponseEntity<>(loginRequest , HttpStatus.OK);
     }
 
 }
